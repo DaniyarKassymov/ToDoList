@@ -1,0 +1,124 @@
+@using ToDoList.Enums
+@using ToDoList.Util
+@model ToDoList.ViewModels.TaskVms.ToDoTaskFiltered
+
+@{
+    ViewBag.Title = "Все задачи";
+    Layout = "_Layout";
+}
+
+@if (Model.Tasks.Count == 0)
+{
+    <div class="text-center">
+        <h3>Задачи еще не были добавлены</h3>
+    </div>
+}
+else
+{
+    <form method="get">
+        <div class="form-inline form-group">
+            <label for="name" class="control-label">Имя</label>
+            <input type="text" class="form-control" asp-for="Name" id="name">
+            <label for="description" class="control-label">Описание</label>
+            <input type="text" class="form-control" asp-for="Description" id="description">
+            <label for="priority" class="control-label">Приоритет</label>
+            <select class="form-control" id="priority" asp-for="Priority">
+                <option selected="selected" value="">Все</option>
+                <option value="@Priority.Medium">Средний</option>
+                <option value="@Priority.Low">Низкий</option>
+                <option value="@Priority.High">Высокий</option>
+            </select>
+            <label for="state" class="control-label">Состояние</label>
+            <select class="form-control" id="state" asp-for="State">
+                <option selected="selected" value="">Все</option>
+                <option value="@State.New">Новая</option>
+                <option value="@State.Closed">Закрытая</option>
+                <option value="@State.Opened">Открытая</option>
+            </select>
+            <label for="createdBefore" class="control-label">Дата создания до</label>
+            <input type="date" class="form-control" asp-for="CreatedBefore" id="createdBefore">
+            <label for="createdAfter" class="control-label">Дата создания после</label>
+            <input type="date" class="form-control" asp-for="CreatedAfter" id="createdAfter">
+            <input type="submit" value="Фильтр" class="btn btn-dark">
+        </div>
+    </form>
+    <table class="table">
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-stateSort="@ViewBag.NameSort">
+                    Имя
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-stateSort="@ViewBag.PrioritySort">
+                    Приоритет
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-stateSort="@ViewBag.StateSort">
+                    Состояние
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-state="@ViewBag.CreationDateSort">
+                    Дата создания
+                </a>
+            </th>
+        </tr>
+    </table>
+    <div class="text-center mb-5">
+        <h3>Список задач</h3>
+    </div>
+    <div class="row justify-content-around">
+        @foreach (var task in Model.Tasks)
+            {
+                <div class="card col-3 m-3">
+                    <h3 class="text-center card-header">@task.Title</h3>
+                    <div class="card-body d-flex flex-nowrap">
+                        <ul class="card-text row">
+                            <li>Приоритет: @task.Priority.GetDisplayName()</li>
+                            <li>Состояние: @task.State.GetDisplayName()</li>
+                            <li>Дата создания: @task.CreationDate</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer d-flex justify-content-around">
+                        <td>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a class="btn btn-dark" asp-action="Close"
+                                   asp-route-id="@task.Id">
+                                    Закрыть
+                                </a>
+                                <a class="btn btn-dark" asp-action="Delete"
+                                   asp-route-id="@task.Id">
+                                    Удалить
+                                </a>
+                                <a class="btn btn-dark" asp-action="Details"
+                                   asp-route-id="@task.Id">
+                                    Детали
+                                </a>
+                                <a class="btn btn-dark" asp-action="Open"
+                                   asp-route-id="@task.Id">
+                                    Открыть
+                                </a>
+                                <a class="btn btn-dark" asp-action="Take"
+                                   asp-route-id="@task.Id">
+                                    Взять
+                                </a>
+                            }
+                            else
+                            {
+                                @foreach (var taskAction in task.Actions)
+                                {
+                                    <a class="btn btn-dark" asp-action="@taskAction.ActionName"
+                                       asp-route-id="@task.Id">
+                                        @taskAction.Title
+                                    </a>
+                                }
+                            }
+                        </td>
+                    </div>
+                </div>    
+            }
+    </div>
+}

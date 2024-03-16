@@ -1,0 +1,37 @@
+@model ToDoList.ViewModels.UserVms.RegisterVm
+
+@{
+    ViewBag.Title = "Регистрация";
+    Layout = "_Layout";
+}
+
+<h2>Регистрация пользователя</h2>
+<form asp-action="Register" method="post" asp-controller="Account">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Name">Имя</label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Age">Возраст</label>
+        <input asp-for="Age" class="form-control">
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+            <label asp-for="Password">Пароль</label>
+            <input asp-for="Password" class="form-control">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword">Подтверждение пароля</label>
+        <input asp-for="ConfirmPassword" class="form-control">
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <input type="submit" class="btn btn-outline-success" value="Регистрация">
+</form>

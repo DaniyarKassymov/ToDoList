@@ -1,0 +1,28 @@
+@model ToDoList.ViewModels.UserVms.LoginVm
+
+@{
+    ViewBag.Title = "Вход";
+    Layout = "_Layout";
+}
+
+<h2>Вход в аккаунт</h2>
+<form 
+    asp-action="Login" 
+    asp-controller="Account"
+    method="post" 
+    asp-route-returnUrl="@Model.ReturnUrl">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="form-group">
+            <label asp-for="Email">Email</label>
+            <input asp-for="Email" class="form-control">
+        </div>
+    <div class="form-group">
+        <label asp-for="Password">Пароль</label>
+        <input asp-for="Password" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="RememberMe">Запомнить</label>
+        <input asp-for="RememberMe" class="form-control">
+    </div>
+    <input type="submit" class="btn btn-outline-success" value="Войти">
+</form>

@@ -1,0 +1,59 @@
+@using ToDoList.Enums
+@model ToDoList.ViewModels.TaskVms.AddTaskVm
+
+@{
+    ViewBag.Title = "Добавление задачи";
+    Layout = "_Layout";
+}
+
+<div class="d-flex justify-content-center">
+    <div class="card w-50">
+        <h3 class="text-center card-header">Заполните форму</h3>
+        <div class="card-body">
+            <div class="card-text row">
+                <form asp-action="Add" method="post">
+                    <div class="form-group mb-3">
+                        <label for="category" class="mb-2">Приоритет</label>
+                        <span asp-validation-for="Priority" class="text-danger"></span>
+                        <select class="form-control" id="category" asp-for="Priority">
+                            <option value="@Priority.Low">Низкий</option>
+                            <option value="@Priority.Medium">Средний</option>
+                            <option value="@Priority.High">Высокий</option>
+                            <option selected="selected" value="">Все</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="title" class="mb-2">Название задачи:</label>
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                        <input asp-for="Title"
+                               type="text"
+                               class="form-control"
+                               id="title">
+                    </div>
+                    <div>
+                        <label for="description" class="mb-2">Описание:</label>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                        <input asp-for="Description"
+                               type="text"
+                               class="form-control"
+                               id="description">
+                    </div>
+                    <input type="hidden" asp-for="State" value="@Model.State">
+                    <input type="hidden" asp-for="CreationDate" value="@Model.CreationDate">
+                    <input type="hidden" asp-for="CreatorId" value="@Model.CreatorId">
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-outline-dark my-3">
+                            Добавить задачу
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

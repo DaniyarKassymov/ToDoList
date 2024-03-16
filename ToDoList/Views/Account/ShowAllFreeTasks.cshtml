@@ -1,0 +1,57 @@
+@using ToDoList.Util
+@model ToDoList.ViewModels.TaskVms.IndexViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+@{
+    ViewBag.Title = "Список свободных задач";
+    Layout = "_Layout";
+}
+
+@if (Model.Tasks.Count == 0)
+{
+    <div class="text-center">
+        <h3>Свободных задач нет</h3>
+    </div>
+}
+else
+{
+    <div class="text-center mb-5">
+        <h3>Список свободных задач</h3>
+    </div>
+    <div class="row justify-content-around">
+        @foreach (var task in Model.Tasks)
+        {
+            if (task.PerformerId == null)
+            {
+                <div class="card col-3 m-3">
+                    <h3 class="text-center card-header">@task.Title</h3>
+                    <div class="card-body d-flex flex-nowrap">
+                        <ul class="card-text row">
+                            <li>Приоритет: @task.Priority.GetDisplayName()</li>
+                            <li>Состояние: @task.State.GetDisplayName()</li>
+                            <li>Дата создания: @task.CreationDate</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer d-flex justify-content-around">
+                        <td>
+                            @foreach (var taskAction in task.Actions)
+                            {
+                                <a class="btn btn-dark"
+                                   asp-controller="Task"
+                                   asp-action="@taskAction.ActionName"
+                                   asp-route-id="@task.Id">
+                                    @taskAction.Title
+                                </a>
+                            }
+                        </td>
+                    </div>
+                </div> 
+            }   
+        }
+    </div>
+}
+
